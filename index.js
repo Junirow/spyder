@@ -1,53 +1,73 @@
 const canvas = document.querySelector('canvas');
 const context = canvas.getContext('2d');
+const flyEnemies = [];
 
-canvas.width = innerWidth;
-canvas.height = innerHeight;
+document.onkeydown = move;
+console.log(canvas);
 
-var xPos = 0;
-var yPos = 0;
+canvas.width = 600;
+canvas.height = 600;
+
+var xPos = 275;
+var yPos = 275;
+var elementsPositionX = [
+    50, 100, 150, 200, 250, 300, 350, 400, 450, 500 
+]
+var elementsPositionY = [
+    50, 100, 150, 200, 250, 300, 350, 400, 450, 500 
+]
 
 p1 = document.createElement('img');
 p1.src = 'assets/spider-model-up.png';
 
-context.rect(xPos, yPos, 50, 50);
+context.rect(xPos, yPos, 0, 0);
+
+class Fly {
+    constructor(x, y, radius, color) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.color = color;
+    }
+
+    draw() {
+        context.beginPath()
+        context.arc(this.x, this.y, this.radius, 0, Math.PI*2, false)
+        context.fillStyle = this.color;
+        context.fill();
+    }
+}
+
+//functions
+
 function Player() {
     p1.onload = function() {
-        context.drawImage(p1, xPos, yPos, 100, 100)
+        context.drawImage(p1, xPos, yPos, 50, 50)
     }
 };
-
-Player();
-
-function drawRotated(degrees){
-    context.clearRect(0,0,canvas.width,canvas.height);
-    context.save();
-    context.translate(canvas.width/2,canvas.height/2);
-    context.rotate(degrees*Math.PI/180);
-}
 
 function move(e) {
     // alert(e.keyCode);
     if(e.keyCode == 39) {
-        xPos+=5;
+        xPos+=50;
         p1 = document.createElement('img');
         p1.src = 'assets/spider-model-right.png'
     }
 
     if(e.keyCode == 37) {
-        xPos-=5;
+        xPos-=50;
         p1 = document.createElement('img');
         p1.src = 'assets/spider-model-left.png'
     }
 
     if(e.keyCode == 38) {
-        yPos-=5;
+        yPos-=50;
         p1 = document.createElement('img');
         p1.src = 'assets/spider-model-up.png'
     }
 
     if(e.keyCode == 40) {
-        yPos+=5;
+        yPos+=50;
         p1 = document.createElement('img');
         p1.src = 'assets/spider-model-down.png'
     }
@@ -55,8 +75,83 @@ function move(e) {
     canvas.width = canvas.width;
     context.rect(xPos, yPos, 50, 50);
     Player();
+    drawBoard();
+    flyEnemies.forEach((fly, index) => {
+        if (xPos + 25 == fly.x && yPos + 25 == fly.y) {
+            flyEnemies.splice(index, 1)
+        }
+
+        fly.draw();
+    })
+
+
 };
 
-document.onkeydown = move;
+// Box width
+var bw = 400;
+// Box height
+var bh = 400;
+// Padding
+var p = 10;
 
-console.log(canvas);
+function drawBoard(){
+    context.moveTo(0,0);
+    context.lineTo(600,600);
+    
+    context.moveTo(600,0);
+    context.lineTo(0,600);
+    
+    context.moveTo(300,0);
+    context.lineTo(300,600);
+    
+    context.moveTo(0, 300);
+    context.lineTo(600, 300);
+    
+    context.lineTo(512.1320343559643, 87.8679656440357);
+    context.lineTo(300, 0);
+    context.lineTo(87.8679656440357, 87.8679656440357);
+    context.lineTo(0, 300);
+    context.lineTo(87.8679656440357, 512.1320343559643);
+    context.lineTo(300, 600);
+    context.lineTo(512.1320343559643, 512.1320343559643);
+    context.lineTo(600, 300);
+    
+    context.moveTo(500, 300);
+    
+    context.stroke();
+}
+
+function spawnFly() {
+    setInterval(() => {
+        let controlX = elementsPositionX[Math.floor(Math.random() * elementsPositionX.length)];
+        let controlY = elementsPositionY[Math.floor(Math.random() * elementsPositionY.length)];
+        let x;
+        let y;
+
+        if(controlX != 300 && controlY != 300 ) {
+            x = controlX;
+            y = x;
+        }
+
+        if (controlX == 300 || controlY == 300) {
+            x = controlX;
+            y = controlY;
+        }
+        
+        let radius = 10;
+        let color = 'black';
+
+        flyEnemies.push(new Fly(x, y, radius, color))
+    
+        console.log(flyEnemies)
+
+        flyEnemies.forEach(fly => {
+            fly.draw();
+            console.log(fly)
+        })
+    }, 5000);
+}
+
+Player();
+spawnFly();
+drawBoard();
