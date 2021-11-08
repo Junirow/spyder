@@ -10,12 +10,19 @@ canvas.height = 600;
 
 var xPos = 275;
 var yPos = 275;
+
+flyCount = 0;
+
+let flyArray = localStorage.getItem('fly');
+
 var elementsPositionX = [
     50, 100, 150, 200, 250, 300, 350, 400, 450, 500 
 ]
 var elementsPositionY = [
     50, 100, 150, 200, 250, 300, 350, 400, 450, 500 
 ]
+
+gameOver = false;
 
 p1 = document.createElement('img');
 p1.src = 'assets/spider-model-up.png';
@@ -79,12 +86,18 @@ function move(e) {
     flyEnemies.forEach((fly, index) => {
         if (xPos + 25 == fly.x && yPos + 25 == fly.y) {
             flyEnemies.splice(index, 1)
+            if (flyEnemies.length > 7) {
+                gameOver = true;
+            }
+            flyCount ++;
+            localStorage.setItem('fly', flyCount)
+            console.log(flyArray)
         }
 
         fly.draw();
     })
 
-
+    setScore();
 };
 
 // Box width
@@ -150,6 +163,14 @@ function spawnFly() {
             console.log(fly)
         })
     }, 5000);
+}
+
+function setScore() {
+    if(localStorage.getItem('fly') != null) {
+        document.getElementById('score').innerHTML = localStorage.getItem('fly')
+    } else {
+        document.getElementById('score').innerHTML = 0
+    }
 }
 
 Player();
