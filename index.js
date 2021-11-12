@@ -22,8 +22,6 @@ var elementsPositionY = [
     50, 100, 150, 200, 250, 300, 350, 400, 450, 500 
 ]
 
-gameOver = false;
-
 p1 = document.createElement('img');
 p1.src = 'assets/spider-model-up.png';
 
@@ -83,12 +81,10 @@ function move(e) {
     context.rect(xPos, yPos, 50, 50);
     Player();
     drawBoard();
+
     flyEnemies.forEach((fly, index) => {
         if (xPos + 25 == fly.x && yPos + 25 == fly.y) {
             flyEnemies.splice(index, 1)
-            if (flyEnemies.length > 7) {
-                gameOver = true;
-            }
             flyCount ++;
             localStorage.setItem('fly', flyCount)
             console.log(flyArray)
@@ -156,7 +152,11 @@ function spawnFly() {
 
         flyEnemies.push(new Fly(x, y, radius, color))
     
-        console.log(flyEnemies)
+        console.log("FLY ENEMIES", flyEnemies.length);
+
+        if (flyEnemies.length > 7) {
+            gameOver();
+        }
 
         flyEnemies.forEach(fly => {
             fly.draw();
@@ -171,6 +171,15 @@ function setScore() {
     } else {
         document.getElementById('score').innerHTML = 0
     }
+}
+
+function gameOver() {
+    var newDiv = document.createElement('div');
+    const overText = document.createTextNode('GAME OVER');
+    newDiv.appendChild(overText);
+
+    const oldDiv = document.getElementById('wrapper');
+    document.body.replaceChild(newDiv, oldDiv);
 }
 
 Player();
