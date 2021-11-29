@@ -1,12 +1,74 @@
 <style>
     body {
         margin: 0;
+        background-color: rgb(104, 104, 104);
+        text-align: center;
+    }
+
+    #wrapper {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    #canvas {
+        background-color: rgb(211, 211, 211);
+        border: 1px solid rgb(70, 70, 70);
+        border-radius: 50%;
+    }
+
+    .score {
+        font-size: 25px;
+        font-weight: 550;
+    }
+
+    .text {
+        color: aqua;
+    }
+
+    .num {
+        color: red;
+    }
+
+    .over {
+        width: 100%;
+        margin-top: 300px;
+        display: flex;
+        justify-content: center;
+        font-size: 50px;
+        font-weight: 550;
+        color: #ff5d1d;
+    }
+
+    .btn-retry {
+        width: 100px;
+        margin: auto;
+        margin-top: 30px;
+        padding: 10px;
+        font-size: 25px;
+        font-weight: 600;
+        color: #e9e9e9;
+        background: #4ad868;
+        border: 1px solid #4ad868;
+        border-radius: 10px;
+        cursor: pointer;
+        transition-duration: 0.2s;
+    }
+
+    .btn-retry:hover {
+        color: #2a803c;
+        background: #e9e9e9;
+        border: 1px solid #2a803c;
     }
 </style>
 
 <div id="wrapper">
-    <div id='score' class="score"></div>
-    <canvas></canvas>
+    <div class="score">
+        <span class="text"> Fly count: </span>
+        <span id='score' class="num"></span>
+    </div>
+    <canvas id="canvas"></canvas>
 </div>
+<div id="dummy"></div>
 
 <script src="index.js"></script>

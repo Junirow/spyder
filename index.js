@@ -54,27 +54,35 @@ function Player() {
 function move(e) {
     // alert(e.keyCode);
     if(e.keyCode == 39) {
-        xPos+=50;
-        p1 = document.createElement('img');
-        p1.src = 'assets/spider-model-right.png'
+        if (xPos < 550) {
+            xPos+=50;
+            p1 = document.createElement('img');
+            p1.src = 'assets/spider-model-right.png';
+        }
     }
 
     if(e.keyCode == 37) {
-        xPos-=50;
-        p1 = document.createElement('img');
-        p1.src = 'assets/spider-model-left.png'
+        if (xPos > 0) {
+            xPos-=50;
+            p1 = document.createElement('img');
+            p1.src = 'assets/spider-model-left.png';
+        }
     }
 
     if(e.keyCode == 38) {
-        yPos-=50;
-        p1 = document.createElement('img');
-        p1.src = 'assets/spider-model-up.png'
+        if (yPos > 0) {
+            yPos-=50;
+            p1 = document.createElement('img');
+            p1.src = 'assets/spider-model-up.png';
+        }
     }
 
     if(e.keyCode == 40) {
-        yPos+=50;
-        p1 = document.createElement('img');
-        p1.src = 'assets/spider-model-down.png'
+        if (yPos < 550) {
+            yPos+=50;
+            p1 = document.createElement('img');
+            p1.src = 'assets/spider-model-down.png';
+        }
     }
 
     canvas.width = canvas.width;
@@ -162,7 +170,7 @@ function spawnFly() {
             fly.draw();
             console.log(fly)
         })
-    }, 5000);
+    }, 1000);
 }
 
 function setScore() {
@@ -177,9 +185,19 @@ function gameOver() {
     var newDiv = document.createElement('div');
     const overText = document.createTextNode('GAME OVER');
     newDiv.appendChild(overText);
+    newDiv.className = 'over';
 
     const oldDiv = document.getElementById('wrapper');
     document.body.replaceChild(newDiv, oldDiv);
+
+    var btn = document.createElement('button');
+    const btnText = document.createTextNode('RETRY');
+    btn.appendChild(btnText);
+    btn.className = 'btn-retry';
+    btn.addEventListener("click", function () {
+        window.location.reload();
+    });
+    document.body.insertBefore(btn, document.getElementById('dummy'));
 }
 
 Player();
